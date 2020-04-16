@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 
 import pandas as pd
@@ -19,13 +20,20 @@ class Modeler:
 
     record = ''
 
-    def __init__(self, country=None, predict_len=2, use_default_models=True):
+    def __init__(self, country=None, predict_len=2, use_default_models=True, mode='notebook', output_folder='output', plot_mode='image'):
         self.predict_len = predict_len
         self.c = countries.CountryData()
-        self.set_country(country)
-        self.country_name = country
+        if country is not None:
+            self.set_country(country)
         if use_default_models:
             self.models = self.default_models
+        
+        # export options
+        if mode not in ('notebook', 'cli'):
+            raise RuntimeError('El modo debe ser `notebook` o `cli`')
+        self.mode = mode
+        self.output_folder = output_folder
+        self.plot_mode = plot_mode
     
     def log(self, text):
         self.record += text
@@ -57,24 +65,25 @@ class Modeler:
                 predict_len=self.predict_len,
                 start_date=self.data[2][0]
             )
-        self.show_record()
+        
+        self.create_record()
         self.plot()
+        self.export()
     
     def set_country(self, country):
         self.data = self.c.get_country(country)
+        self.country_name = country
     
-    def show_record(self):
+    def create_record(self):
         best_r2 = 0
         best_model = ''
-        print(self.record)
         for name, model in self.processed_models.items():
-            print(model.record)
+            self.log(model.record)
             if hasattr(model, 'r2') and model.r2 > best_r2:
                 best_r2 = model.r2
                 best_model = model.plot_name
         if best_r2 > 0:
-            print(f"\nMejor modelo: {best_model} (R2 = {best_r2})")
-
+            self.log(f"\nMejor modelo: {best_model} (R2 = {best_r2})")
         
     def plot(self):
         plot_data = []
@@ -93,5 +102,37 @@ class Modeler:
             title = self.country_name,
             xaxis_type='date'
         )
-        fig = go.Figure(data=plot_data, layout=layout)
-        fig.show()
+        self.fig = go.Figure(data=plot_data, layout=layout)
+    
+    def export(self):
+        if self.mode == 'notebook':
+            print(self.record)
+            self.fig.show()
+            return
+        
+        # Crear la carpeta de destino
+        if not os.path.exists(self.output_folder):
+            os.mkdir(self.output_folder)
+        
+        with open(os.path.join(self.output_folder, f'results_{self.country_name}.txt'), 'w', encoding='utf8') as output_file:
+            output_file.write(self.record)
+            print("******************************************")
+            print(f"Resultados escritos en {output_file.name}")
+            print("******************************************")
+        
+        # export the plot
+        if self.plot_mode == 'image':
+            self.export_image_plot()
+        if self.plot_mode == 'html':
+            self.export_html_plot()
+    
+    def export_image_plot(self):
+        try:
+            self.fig.write_image(os.path.join(self.output_folder, f'results_{self.country_name}.png'))
+        except ValueError as e:
+            print("Hubo un error al exportar la imagen")
+            print("Este error probablemente se debe a que se requiere la instalación de Orca para exportar imágenes")
+            print("La guía de instalación se encuentra en: https://github.com/plotly/orca")
+    
+    def export_html_plot(self):
+        self.fig.write_html(os.path.join(self.output_folder, f'results_{self.country_name}.html'))

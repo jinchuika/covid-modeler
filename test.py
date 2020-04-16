@@ -6,5 +6,6 @@ if module_path not in sys.path:
 
 from modeler.wrapper import Modeler
 
-modeler = Modeler('Guatemala', predict_len=1.5)
-modeler.process()
+modeler = Modeler(predict_len=1.5, output_folder='example_output', mode='cli', plot_mode='html')
+print(modeler.c.show_countries())
+# modeler.process()

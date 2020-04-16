@@ -1,0 +1,14 @@
+Resultados para *Guatemala*
+** Basado en los datos de la última semana **
+
+	Casos confirmados en 2020-04-15 	 180
+	Casos confirmados en 2020-04-08 	 87
+	Proporción: 2.07
+	Incremento semanal: 106.9%
+	Incremento diario: 10.9% por día
+	Tiempo que tarda en duplicarse (al ritmo actual): 6.7 días
+** Ajuste logistico**
+	R^2: 0.98866	Tiempo para duplicarse (ritmo actual): 11.02 (± 4.07) días
+** Ajuste exponencial**
+	R^2: 0.98826	Tiempo para duplicarse (ritmo actual): 7.0 (± 0.81) días
+Mejor modelo: Logistic (R2 = 0.9886599602656359)
