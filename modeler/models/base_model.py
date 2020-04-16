@@ -38,7 +38,7 @@ class BaseModel:
     
     def set_date_range(self, start_date):
         end_date = pd.to_datetime(start_date).date() + timedelta(days=self.x_pred.size - 1)
-        self.date_range = pd.Series([str(d.date()) for d in pd.date_range(start_date, end_date)])
+        self.date_range = pd.Series([str(d.date()) for d in pd.date_range(str(start_date), end_date)])
         self.use_dates = True
     
     def plot(self):

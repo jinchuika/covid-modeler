@@ -80,7 +80,7 @@ class Modeler:
         plot_data = []
         end_date = pd.to_datetime(self.data[2][0]).date() + timedelta(days=len(self.data[2]))
         original_data = go.Scatter(
-            x=pd.date_range(start=self.data[2][0], end=end_date),
+            x=pd.date_range(start=str(self.data[2][0]), end=end_date),
             y=self.data[1],
             mode='markers',
             name='Casos confirmados'
