@@ -22,3 +22,7 @@ Ejemplo de los resultados:
 - [ ] Exportar los resultados a un archivo de texto
 - [ ] Obtener datos a partir de un archivo local
 - [ ] Crear un paquete apropiado para instalación local
+
+***
+
+Una versión preliminar del Notebook que dio origen a este paquete puede ser encontrada [**en este archivo**](old/covid-plotly.ipynb).
