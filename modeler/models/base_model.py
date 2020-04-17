@@ -11,11 +11,11 @@ class BaseModel:
 
     record = ''
 
-    def __init__(self, x_train, y_train, predict_len=2, plot=True, plot_name='', start_date=None):
+    def __init__(self, x_train, y_train, predict_len=15, plot=True, plot_name='', start_date=None):
         self.x_train = np.asarray(x_train, dtype='float64')
         self.y_train = np.asarray(y_train, dtype='float64')
 
-        self.x_pred = np.arange(round(len(x_train) * predict_len))
+        self.x_pred = np.arange(x_train.size + int(predict_len))
         self.y_pred = np.array([])
         
         self.plot_name = self.get_plot_name()

@@ -20,7 +20,7 @@ class Modeler:
 
     record = ''
 
-    def __init__(self, country=None, predict_len=2, use_default_models=True, mode='notebook', output_folder='output', plot_mode='image'):
+    def __init__(self, country=None, predict_len=15, use_default_models=True, mode='notebook', output_folder='output', plot_mode='image', show_plot=False):
         self.predict_len = predict_len
         self.c = countries.CountryData()
         if country is not None:
@@ -34,6 +34,7 @@ class Modeler:
         self.mode = mode
         self.output_folder = output_folder
         self.plot_mode = plot_mode
+        self.show_plot = show_plot
     
     def log(self, text):
         self.record += text
@@ -115,6 +116,7 @@ class Modeler:
             os.mkdir(self.output_folder)
         
         with open(os.path.join(self.output_folder, f'results_{self.country_name}.txt'), 'w', encoding='utf8') as output_file:
+            print(self.record)
             output_file.write(self.record)
             print("******************************************")
             print(f"Resultados escritos en {output_file.name}")
@@ -128,11 +130,19 @@ class Modeler:
     
     def export_image_plot(self):
         try:
+            file_name = os.path.join(self.output_folder, f'results_{self.country_name}.png')
             self.fig.write_image(os.path.join(self.output_folder, f'results_{self.country_name}.png'))
+            print(f'El gráfico fue exportado en {file_name}')
+            if self.show_plot:
+                self.fig.show()
         except ValueError as e:
             print("Hubo un error al exportar la imagen")
             print("Este error probablemente se debe a que se requiere la instalación de Orca para exportar imágenes")
             print("La guía de instalación se encuentra en: https://github.com/plotly/orca")
     
     def export_html_plot(self):
-        self.fig.write_html(os.path.join(self.output_folder, f'results_{self.country_name}.html'))
+        file_name = os.path.join(self.output_folder, f'results_{self.country_name}.html')
+        self.fig.write_html(file_name)
+        print(f'El gráfico fue exportado en {file_name}')
+        if self.show_plot:
+            self.fig.show()
