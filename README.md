@@ -10,6 +10,14 @@ Instalar los requerimientos con
 pip install -r requirements.txt
 ```
 
+**YA TENEMOS INTERFAZ GRÁFICA**
+
+Solo ejecuta
+
+```
+python3 gui.py
+```
+
 El modelador funciona por medio de la clase `Modeler` que se encuentra dentro del archivo `wrapper.py`.
 
 ```python
@@ -21,7 +29,7 @@ modeler.process() # genera las predicciones de datos para el pais seleccionado
 Los parámetros disponibles son:
 
 - `country` (str): El nombre del país a utilizar. Se puede dejar en blanco y utilizar `modeler.c.show_countries()` para mostrar el listado de países disponibles. Después, utilizar `modeler.set_country('Pais')` para fijar uno.
-- `predict_len` (float): El factor por el cual se desea multiplicar la cantidad de días actuales para predecir en el futuro. Por ejemplo, `predict_len=2` predice el doble de días de contagio actual, `predict_len=1.5` predice 50% más de los días de infección actuales.
+- `predict_len` (float): La cantidad de días a predecir a partir de la última fecha registrada.
 - `use_default_models` (bool): En el futuro se pretende poder incluir modelos de predicción personalizados, por ahora este parámetro siempre debe ser `True` para utilizar los modelos incluidos por default.
 - `mode` (str): Indica el modo en el que se ejecuta el modelo. Puede ser `'notebook'` para ejecutarlo desde un Jupyter Notebook o `'cli'` para utilizarlo dentro de un paquete externo o desde la terminal.
 - `output_folder` (str): La ruta de la carpeta donde se escribirán los resultados en caso de que el modo de ejecución sea `cli`.
@@ -42,7 +50,7 @@ Puedes ver un ejemplo de los resultados en la carpeta [`example_output`](example
 - [x] Ejecuión fuera de Jupyter Notebook
 - [ ] Permitir elegir un rango variable de fechas
 - [ ] Mejorar la documentación
-- [ ] Permitir ejecutar todo desde línea de comandos
+- [x] Permitir ejecutar todo desde línea de comandos
 - [x] Exportar los resultados a un archivo de texto
 - [ ] Obtener datos a partir de un archivo local
 - [ ] Crear un paquete apropiado para instalación local
